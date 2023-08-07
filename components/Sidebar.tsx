@@ -7,6 +7,8 @@ import { useMemo } from "react";
 import { HiHome} from "react-icons/hi";
 import { BiSearch } from "react-icons/bi"
 import Box from "./Box";
+import SidebarItem from "./SidebarItem";
+import Library from "./Library";
 
 interface SidebarProps {
     children: React.ReactNode;
@@ -17,16 +19,16 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
     const pathname = usePathname();
     
-    const route = useMemo(() => [
+    const routes = useMemo(() => [
         {
             icon:  HiHome,
-            label: 'Home',
+            label: 'Início',
             active: pathname !== '/search',
             href: '/',
         },
         {
             icon: BiSearch,
-            label: 'Search',
+            label: 'Buscar',
             active: pathname === '/search',
             href: '/search',
         }
@@ -47,9 +49,30 @@ const Sidebar: React.FC<SidebarProps> = ({
                 "
             >
                 <Box>
-                    Sidebar Navigation
+                    <div 
+                        className="
+                            flex
+                            flex-col
+                            gap-y-4
+                            px-5
+                            py-4
+                        "
+                    >
+                        {routes.map((item) => (
+                            <SidebarItem
+                              key={item.label}
+                              {...item} 
+                            />
+                        ))}
+                    </div>
+                </Box>
+                <Box className="overflow-yauto h-full">
+                    <Library />
                 </Box>
             </div>
+            <main className="h-full flex-1 overflow-auto py-2">
+                {children}
+            </main>
         </div>
      );
 }
